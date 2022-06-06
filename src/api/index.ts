@@ -1,0 +1,1 @@
+export { fetchActors} from "./Actor";
