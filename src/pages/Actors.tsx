@@ -1,11 +1,13 @@
 import React from 'react';
+import { ActorTable } from '../components';
 import NavigationBar from '../components/NavigationBar';
 
-
-export default function Home() {
+export default function Actors() {
   return (
       <div>
         <NavigationBar/>
-      </div> 
+        <ActorTable/>
+      </div>
+      
   );
 }

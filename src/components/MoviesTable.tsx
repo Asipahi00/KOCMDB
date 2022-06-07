@@ -6,22 +6,22 @@ import {
   useRef,
   useState,
 } from "react";
-import { fetchActors, postActors } from "../api";
-import { Actors } from "../types";
-import { EditActors } from ".";
+import { fetchMovies, postMovies } from "../api";
+import { Movie } from "../types";
+import { EditMovies } from ".";
 
-export default function ActorTable() {
-  const [sortKey, setSortKey] = useState<SortKeys>("idactors");
+export default function MoviesTable() {
+  const [sortKey, setSortKey] = useState<SortKeys>("idmovies");
   const [sortOrder, setSortOrder] = useState<SortOrder>("ascn");
-  const [actors, setActors] = useState<Actors[]>([]);
+  const [movies, setMovies] = useState<Movie[]>([]);
 
   useEffect(() => {
-    fetchActors().then((data) => {
-      setActors([...data]);
+    fetchMovies().then((data) => {
+      setMovies([...data]);
     });
   }, []);
 
-  type Data = typeof actors;
+  type Data = typeof movies;
 
   type SortKeys = keyof Data[0];
 
@@ -38,7 +38,7 @@ export default function ActorTable() {
   }) {
     if (!sortKey) return tableData;
 
-    const sortedData = actors.sort((a, b) => {
+    const sortedData = movies.sort((a, b) => {
       return a[sortKey] > b[sortKey] ? 1 : -1;
     });
 
@@ -75,17 +75,17 @@ export default function ActorTable() {
   }
 
   const headers: { key: SortKeys; label: string }[] = [
-    { key: "idactors", label: "Id" },
+    { key: "idmovies", label: "Id" },
     { key: "name", label: "Name" },
-    { key: "surname", label: "Surname" },
-    { key: "age", label: "Age" },
-    { key: "birth_year", label: "Birth Year" },
+    { key: "synopsis", label: "Synopsis" },
+    { key: "rating", label: "Rating" },
+    { key: "release_date", label: "Release Date" },
   ];
 
   const sortedData = useCallback(
     () =>
-      sortData({ tableData: actors, sortKey, reverse: sortOrder === "desc" }),
-    [actors, sortKey, sortOrder]
+      sortData({ tableData: movies, sortKey, reverse: sortOrder === "desc" }),
+    [movies, sortKey, sortOrder]
   );
 
   function changeSort(key: SortKeys) {
@@ -94,22 +94,19 @@ export default function ActorTable() {
     setSortKey(key);
   }
   let nameInput = useRef(null);
-  let surnameInput = useRef(null);
+  let synopsisInput = useRef(null);
   let idInput = useRef(null);
-  let birthyearInput = useRef(null);
-  let ageInput = useRef(null);
-  
+  let ratingInput = useRef(null);
+  let releaseDateInput = useRef(null);
 
-  async function createActor() {
-    await postActors(
-      {
-        idactors: idInput.current.value,
-        name: nameInput.current.value,
-        surname: surnameInput.current.value,
-        age: ageInput.current.value,
-        birth_year: birthyearInput.current.value,
-      }
-    );
+  async function createMovies() {
+    await postMovies({
+      idmovies: idInput.current.value,
+      name: nameInput.current.value,
+      synopsis: synopsisInput.current.value,
+      rating: ratingInput.current.value,
+      release_date: releaseDateInput.current.value,
+    });
     window.location.reload();
   }
   return (
@@ -145,43 +142,39 @@ export default function ActorTable() {
         </td>
 
         <td className="create-form-inputs">
-          <div className="create-form">Surname</div>
-          <input className="create-form-input" ref={surnameInput} />
+          <div className="create-form">Synopsis</div>
+          <input className="create-form-input" ref={synopsisInput} />
         </td>
         <td className="create-form-inputs">
-          <div className="create-form">Age</div>
-          <input className="create-form-input" ref={ageInput} />
+          <div className="create-form">Rating</div>
+          <input className="create-form-input" ref={ratingInput} />
         </td>
         <td className="create-form-inputs">
-          <div className="create-form">Birth Year</div>
-          <input className="create-form-input" ref={birthyearInput} />
+          <div className="create-form">Release Date</div>
+          <input className="create-form-input" ref={releaseDateInput} />
         </td>
 
-        <td className="createButton" onClick={createActor}>
+        <td className="createButton" onClick={createMovies}>
           Create
         </td>
-        
       </tbody>
 
       <tbody>
-        {sortedData().map((actors) => {
-          const id = parseInt(actors.idactors);
-          const age = parseInt(actors.age);
-          const birth_year = parseInt(actors.birth_year);
-
+        {sortedData().map((movie) => {
+          var id = Number(movie.idmovies);
           return (
-            <tr key={actors.idactors}>
+            <tr key={id}>
               <td>{id}</td>
               <td>
-                <p>{actors.name}</p>
+                <p>{movie.name}</p>
               </td>
               <td>
-                <p>{actors.surname}</p>
+                <p>{movie.synopsis}</p>
               </td>
-              <td>{age}</td>
-              <td>{birth_year}</td>
+              <td>{movie.rating}</td>
+              <td>{movie.release_date}</td>
               <td>
-               <EditActors {...actors}/>
+                <EditMovies {...movie} />
               </td>
             </tr>
           );
