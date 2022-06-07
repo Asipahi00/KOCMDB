@@ -4,4 +4,5 @@ export default interface Movies{
     synopsis: string,
     rating: string,
     release_date: string,
+    is_adult: string,
 }
