@@ -80,7 +80,7 @@ export default function TVShowsTable() {
     { key: "rating", label: "Rating" },
     { key: "release_date", label: "Release Date" },
     { key: "is_adult", label: "Is Adult?" },
-    { key: "cast", label: "Cast Members" },
+    { key: "lead", label: "Lead Actor" },
   ];
 
   const sortedData = useCallback(
@@ -100,7 +100,7 @@ export default function TVShowsTable() {
   let ratingInput = useRef(null);
   let releaseDateInput = useRef(null);
   let isAdultInput = useRef(null);
-  let castInput = useRef(null)
+  let leadInput = useRef(null)
 
 
   async function createTVShows() {
@@ -111,7 +111,7 @@ export default function TVShowsTable() {
       rating: ratingInput.current.value,
       release_date: releaseDateInput.current.value,
       is_adult: isAdultInput.current.value,
-      cast: castInput.current.value,
+      lead: leadInput.current.value,
       
     });
     window.location.reload();
@@ -165,8 +165,8 @@ export default function TVShowsTable() {
           <input className="create-form-input" ref={isAdultInput} />
         </td>
         <td className="create-form-inputs">
-          <div className="create-form">Cast Members</div>
-          <input className="create-form-input" ref={castInput} />
+          <div className="create-form">Lead Actor</div>
+          <input className="create-form-input" ref={leadInput} />
         </td>
 
         <td className="createButton" onClick={createTVShows}>
@@ -189,7 +189,7 @@ export default function TVShowsTable() {
               <td>{tvshow.rating}</td>
               <td>{tvshow.release_date}</td>
               <td>{tvshow.is_adult}</td>
-              <td>{tvshow.cast}</td>
+              <td>{tvshow.lead}</td>
               <td>
                 <EditTVShows {...tvshow} />
               </td>

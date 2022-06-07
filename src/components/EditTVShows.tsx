@@ -2,7 +2,6 @@ import "../styles/EditForm.css";
 import { useRef, useState } from "react";
 import { TVShow } from "../types";
 import { deleteTVShows, putTVShows } from "../api";
-import { TVShows } from "../pages";
 
 export default function EditTVShows(tvshow: TVShow) {
   const [editingState, setEditingState] = useState(false);
@@ -13,7 +12,7 @@ export default function EditTVShows(tvshow: TVShow) {
   let ratingInput = useRef(null);
   let releaseDateInput = useRef(null);
   let isAdultInput = useRef(null);
-  let castInput = useRef(null);
+  let leadInput = useRef(null);
 
   async function updateTVShow() {
     await putTVShows({
@@ -23,7 +22,7 @@ export default function EditTVShows(tvshow: TVShow) {
     rating: ratingInput.current.value,
     release_date: releaseDateInput.current.value,
     is_adult: isAdultInput.current.value,
-    cast: castInput.current.value,
+    lead: leadInput.current.value,
 });
     window.location.reload();
   }
@@ -84,11 +83,11 @@ export default function EditTVShows(tvshow: TVShow) {
               />
             </div>
             <div className="edit-form-inputs">
-              <div className="edit-form-label">Cast Members</div>
+              <div className="edit-form-label">Lead Actor</div>
               <input
                 className="edit-form-input"
-                ref={castInput}
-                defaultValue={tvshow.cast}
+                ref={leadInput}
+                defaultValue={tvshow.lead}
               />
             </div>
             <div className="edit-form-btns">

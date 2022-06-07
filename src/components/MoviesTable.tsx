@@ -80,6 +80,7 @@ export default function MoviesTable() {
     { key: "rating", label: "Rating" },
     { key: "release_date", label: "Release Date" },
     { key: "is_adult", label: "Is Adult?" },
+    { key: "lead", label: "Lead Actor" },
   ];
 
   const sortedData = useCallback(
@@ -99,6 +100,7 @@ export default function MoviesTable() {
   let ratingInput = useRef(null);
   let releaseDateInput = useRef(null);
   let isAdultInput = useRef(null);
+  let leadInput = useRef(null);
 
 
   async function createMovies() {
@@ -109,6 +111,7 @@ export default function MoviesTable() {
       rating: ratingInput.current.value,
       release_date: releaseDateInput.current.value,
       is_adult: isAdultInput.current.value,
+      lead: leadInput.current.value,
       
     });
     window.location.reload();
@@ -161,6 +164,10 @@ export default function MoviesTable() {
           <div className="create-form">Adult Film?</div>
           <input className="create-form-input" ref={isAdultInput} />
         </td>
+        <td className="create-form-inputs">
+          <div className="create-form">Lead Actor</div>
+          <input className="create-form-input" ref={leadInput} />
+        </td>
 
         <td className="createButton" onClick={createMovies}>
           Create
@@ -182,6 +189,7 @@ export default function MoviesTable() {
               <td>{movie.rating}</td>
               <td>{movie.release_date}</td>
               <td>{movie.is_adult}</td>
+              <td>{movie.lead}</td>
               <td>
                 <EditMovies {...movie} />
               </td>

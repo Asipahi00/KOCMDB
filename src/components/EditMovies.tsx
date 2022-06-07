@@ -13,6 +13,7 @@ export default function EditMovies(movie: Movie) {
   let ratingInput = useRef(null);
   let releaseDateInput = useRef(null);
   let isAdultInput = useRef(null);
+  let leadInput = useRef(null);
 
   async function updateMovie() {
     await putMovies({
@@ -22,6 +23,7 @@ export default function EditMovies(movie: Movie) {
       rating: ratingInput.current.value,
       release_date: releaseDateInput.current.value,
       is_adult: isAdultInput.current.value,
+      lead: leadInput.current.value,
     });
     window.location.reload();
   }
@@ -79,6 +81,14 @@ export default function EditMovies(movie: Movie) {
                 className="edit-form-input"
                 ref={isAdultInput}
                 defaultValue={movie.is_adult}
+              />
+            </div>
+            <div className="edit-form-inputs">
+              <div className="edit-form-label">Lead Actor</div>
+              <input
+                className="edit-form-input"
+                ref={isAdultInput}
+                defaultValue={movie.lead}
               />
             </div>
             <div className="edit-form-btns">

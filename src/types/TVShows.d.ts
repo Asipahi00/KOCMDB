@@ -5,5 +5,5 @@ export default interface TVShows{
     rating: string,
     release_date: string,
     is_adult: string,
-    cast: string,
+    lead: string,
 }

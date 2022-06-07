@@ -5,4 +5,5 @@ export default interface Movies{
     rating: string,
     release_date: string,
     is_adult: string,
+    lead: string,
 }
