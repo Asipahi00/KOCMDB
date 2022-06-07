@@ -6,22 +6,22 @@ import {
   useRef,
   useState,
 } from "react";
-import { fetchMovies, postMovies } from "../api";
-import { Movie } from "../types";
-import { EditMovies } from ".";
+import { fetchTVShows, postTVShows } from "../api";
+import { TVShow } from "../types";
+import { EditTVShows } from ".";
 
-export default function MoviesTable() {
-  const [sortKey, setSortKey] = useState<SortKeys>("idmovies");
+export default function TVShowsTable() {
+  const [sortKey, setSortKey] = useState<SortKeys>("idtvshows");
   const [sortOrder, setSortOrder] = useState<SortOrder>("ascn");
-  const [movies, setMovies] = useState<Movie[]>([]);
+  const [tvshows, setTVShows] = useState<TVShow[]>([]);
 
   useEffect(() => {
-    fetchMovies().then((data) => {
-      setMovies([...data]);
+    fetchTVShows().then((data) => {
+      setTVShows([...data]);
     });
   }, []);
 
-  type Data = typeof movies;
+  type Data = typeof tvshows;
 
   type SortKeys = keyof Data[0];
 
@@ -38,7 +38,7 @@ export default function MoviesTable() {
   }) {
     if (!sortKey) return tableData;
 
-    const sortedData = movies.sort((a, b) => {
+    const sortedData = tvshows.sort((a, b) => {
       return a[sortKey] > b[sortKey] ? 1 : -1;
     });
 
@@ -68,24 +68,25 @@ export default function MoviesTable() {
             ? "sort-button sort-reverse"
             : "sort-button"
         }`}
-      >
+      >▲
       </button>
     );
   }
 
   const headers: { key: SortKeys; label: string }[] = [
-    { key: "idmovies", label: "Id" },
+    { key: "idtvshows", label: "Id" },
     { key: "name", label: "Name" },
     { key: "synopsis", label: "Synopsis" },
     { key: "rating", label: "Rating" },
     { key: "release_date", label: "Release Date" },
     { key: "is_adult", label: "Is Adult?" },
+    { key: "cast", label: "Cast Members" },
   ];
 
   const sortedData = useCallback(
     () =>
-      sortData({ tableData: movies, sortKey, reverse: sortOrder === "desc" }),
-    [movies, sortKey, sortOrder]
+      sortData({ tableData: tvshows, sortKey, reverse: sortOrder === "desc" }),
+    [tvshows, sortKey, sortOrder]
   );
 
   function changeSort(key: SortKeys) {
@@ -99,16 +100,18 @@ export default function MoviesTable() {
   let ratingInput = useRef(null);
   let releaseDateInput = useRef(null);
   let isAdultInput = useRef(null);
+  let castInput = useRef(null)
 
 
-  async function createMovies() {
-    await postMovies({
-      idmovies: idInput.current.value,
+  async function createTVShows() {
+    await postTVShows({
+      idtvshows: idInput.current.value,
       name: nameInput.current.value,
       synopsis: synopsisInput.current.value,
       rating: ratingInput.current.value,
       release_date: releaseDateInput.current.value,
       is_adult: isAdultInput.current.value,
+      cast: castInput.current.value,
       
     });
     window.location.reload();
@@ -158,32 +161,37 @@ export default function MoviesTable() {
           <input className="create-form-input" ref={releaseDateInput} />
         </td>
         <td className="create-form-inputs">
-          <div className="create-form">Adult Film?</div>
+          <div className="create-form">Adult TV Show?</div>
           <input className="create-form-input" ref={isAdultInput} />
         </td>
+        <td className="create-form-inputs">
+          <div className="create-form">Cast Members</div>
+          <input className="create-form-input" ref={castInput} />
+        </td>
 
-        <td className="createButton" onClick={createMovies}>
+        <td className="createButton" onClick={createTVShows}>
           Create
         </td>
       </tbody>
 
       <tbody>
-        {sortedData().map((movie) => {
-          var id = Number(movie.idmovies);
+        {sortedData().map((tvshow) => {
+          var id = Number(tvshow.idtvshows);
           return (
             <tr key={id}>
               <td>{id}</td>
               <td>
-                <p>{movie.name}</p>
+                <p>{tvshow.name}</p>
               </td>
               <td>
-                <p>{movie.synopsis}</p>
+                <p>{tvshow.synopsis}</p>
               </td>
-              <td>{movie.rating}</td>
-              <td>{movie.release_date}</td>
-              <td>{movie.is_adult}</td>
+              <td>{tvshow.rating}</td>
+              <td>{tvshow.release_date}</td>
+              <td>{tvshow.is_adult}</td>
+              <td>{tvshow.cast}</td>
               <td>
-                <EditMovies {...movie} />
+                <EditTVShows {...tvshow} />
               </td>
             </tr>
           );
